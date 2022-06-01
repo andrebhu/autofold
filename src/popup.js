@@ -1,23 +1,32 @@
-let changeColor = document.getElementById("changeColor");
+const toggleButton = document.getElementById("toggleButton");
 
-chrome.storage.sync.get("color", ({ color }) => {
-    changeColor.style.backgroundColor = color;
-});
 
-// When the button is clicked, inject setPageBackgroundColor into current page
-changeColor.addEventListener("click", async () => {
-    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+const user = document.getElementsByClassName("you-player");
+
+
+// config for DOM Observer
+// const config = { attributes: true };
+
+// callback function for mutations
+
+// const observer = new MutationObserver(function (event) {
+//   console.log(event);
+// });
+
+// observer.observe(user, {
+//   arrtributes: true,
+//   subtree: true
+// });
+
+
+
+
+// jQuery code
+$(document).ready(function () {
+  $("#toggleButton").click(function () {
+    $("#toggleButton").text(($("#toggleButton").text() == "Turn On") ? "Turn Off" : "Turn On");
+  })
   
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      function: setPageBackgroundColor,
-    });
-  });
-  
-  // The body of this function will be executed as a content script inside the
-  // current page
-  function setPageBackgroundColor() {
-    chrome.storage.sync.get("color", ({ color }) => {
-      document.body.style.backgroundColor = color;
-    });
-  }
+})
+
+$(document).append(getCurrentTab());
