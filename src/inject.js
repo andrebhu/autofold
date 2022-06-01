@@ -10,7 +10,6 @@ const player = document.getElementsByClassName("you-player")[0];
 const card1 = player.getElementsByClassName("card-container")[0];
 const card2 = player.getElementsByClassName("card-container")[1];
 
-
 // sleep function, probably a better way to do this
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -34,9 +33,7 @@ function click_fold() {
 
 
 
-
-
-// kind of the main function where all the logic is
+// main important code
 let observer = new MutationObserver(mutationRecords => {
     var cards = [];
     for (let record of mutationRecords) {
@@ -47,9 +44,8 @@ let observer = new MutationObserver(mutationRecords => {
         cards.push(new Card(value, suit));
     }
 
-    window.postMessage({type: "FROM_PAGE", text: JSON.stringify(cards[0]) + JSON.stringify(cards[1])}, "*");
-
-    click_fold();
+    // send cards to extension
+    window.postMessage({type: "FROM_PAGE", text: JSON.stringify(cards[0]) + " " + JSON.stringify(cards[1])}, "*");
 });
 
 
@@ -62,11 +58,9 @@ window.addEventListener("message", (event) => {
     }
 
     if (event.data.type && (event.data.type == "FROM_EXTENSION")) {
-        console.log("Inject.js received: ");
-        console.log(event.data.text);
+        console.log("Inject.js received: " + event.data.text);
     }
 })
-
 
 
 

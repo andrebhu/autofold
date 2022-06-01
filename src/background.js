@@ -9,11 +9,9 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 });
 
-
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     
     
-    // console.log("Received!");
     if (message == 'checkHand') {
         console.log("Received checkHand...");
         sendResponse("Response!");
