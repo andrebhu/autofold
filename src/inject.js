@@ -1,5 +1,3 @@
-console.log("inject.js!");
-
 class Card {
     constructor(value, suit) {
         this.value = value;
@@ -18,14 +16,11 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-
 // click 'fold'
 function click_fold() {
-    // var k_event = new KeyboardEvent('keypress', { key: "f"});
     sleep(1000);
     var fold_button = document.getElementsByClassName("fold")[0];
     var checkfold_button = document.getElementsByClassName("check-fold")[0];
-
 
     // check if bb, then press `check-fold`
     if (checkfold_button) {
@@ -37,7 +32,11 @@ function click_fold() {
 }
 
 
-// declare observer to see card changes
+
+
+
+
+// kind of the main function where all the logic is
 let observer = new MutationObserver(mutationRecords => {
     var cards = [];
     for (let record of mutationRecords) {
@@ -48,9 +47,28 @@ let observer = new MutationObserver(mutationRecords => {
         cards.push(new Card(value, suit));
     }
 
-    console.log(cards);
+    window.postMessage({type: "FROM_PAGE", text: JSON.stringify(cards[0]) + JSON.stringify(cards[1])}, "*");
+
     click_fold();
 });
+
+
+
+
+// receive information from extension
+window.addEventListener("message", (event) => {
+    if (event.source != window) {
+        return;
+    }
+
+    if (event.data.type && (event.data.type == "FROM_EXTENSION")) {
+        console.log("Inject.js received: ");
+        console.log(event.data.text);
+    }
+})
+
+
+
 
 
 // create observers

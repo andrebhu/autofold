@@ -1,4 +1,4 @@
-
+console.log("background.js!");
 
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.sync.get(["handsFolded"], function(result) {
@@ -10,10 +10,17 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 
-
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     
     
+    // console.log("Received!");
+    if (message == 'checkHand') {
+        console.log("Received checkHand...");
+        sendResponse("Response!");
+    }
+
+
+
     if (message == 'addFolded') {
         chrome.storage.sync.get(["handsFolded"], function(result) {
             let i = result["handsFolded"] + 1;
