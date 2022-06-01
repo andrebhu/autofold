@@ -23,9 +23,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     
 
-    if (message == 'getCurrentTab') {
-        return getCurrentTab()
-    }
+    // if (message == 'getCurrentTab') {
+    //     let queryOptions = { active: true, lastFocusedWindow: true };
+    //     let tab = await chrome.tabs.query(queryOptions);
+    //     return tab;
+    // }
 });
 
 

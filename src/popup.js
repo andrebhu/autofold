@@ -1,46 +1,44 @@
-const toggleButton = document.getElementById("toggleButton");
+// const toggleButton = document.getElementById("toggleButton");
 
 
-
-
-// config for DOM Observer
-// const config = { attributes: true };
-
-// callback function for mutations
-
-// const observer = new MutationObserver(function (event) {
-//   console.log(event);
-// });
-
-// observer.observe(user, {
-//   arrtributes: true,
-//   subtree: true
+// document.addEventListener('DOMContentLoaded', async () => {
+//   const toggleButton = document.getElementById("toggleButton");
+//   const user = document.getElementsByClassName("you-player")[0];
+  
 // });
 
 
 
+// // config for DOM Observer
+// // const config = { attributes: true };
+
+// // callback function for mutations
+
+// // const observer = new MutationObserver(function (event) {
+// //   console.log(event);
+// // });
+
+// // observer.observe(user, {
+// //   arrtributes: true,
+// //   subtree: true
+// // });
 
 
 
-
-
-
-// function getCurrentTab() {
-//   var activeTabUrl = "";
-
-
+// // function getCurrentTab() {
+// //   var activeTabUrl = "";
 
   
-//   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-//     // since only one tab should be active and in the current window at once
-//     // the return variable should only have one entry
-//     var activeTab = tabs[0];
-//     activeTabUrl = activeTab.url;
+// //   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+// //     // since only one tab should be active and in the current window at once
+// //     // the return variable should only have one entry
+// //     var activeTab = tabs[0];
+// //     activeTabUrl = activeTab.url;
 
-//     alert(activeTab.url);
-//     return activeTab.url;
-//   });
-// }
+// //     alert(activeTab.url);
+// //     return activeTab.url;
+// //   });
+// // }
 
 
 function addMessage(m) {
@@ -50,12 +48,6 @@ function addMessage(m) {
     $(".message").remove();
   }, 5000);
 }
-
-
-
-
-const user = document.getElementsByClassName("you-player");
-alert(user.length);
 
 
 // jQuery
@@ -73,22 +65,13 @@ $(document).ready(function () {
         return;
       }
 
-
-  
       // alert($("#main-container").hasClass("you-player"));
-
-
-
-
 
 
       $("#toggleButton").text("Turn Off");
       return;
     }
 
-
-
     $("#toggleButton").text("Turn On");    
   })
 })
-
