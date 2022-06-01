@@ -12,13 +12,20 @@ chrome.runtime.onInstalled.addListener(() => {
 
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    
+    
     if (message == 'addFolded') {
         chrome.storage.sync.get(["handsFolded"], function(result) {
             let i = result["handsFolded"] + 1;
             chrome.storage.sync.set({ "handsFolded": i});
         });
+        console.log("Added to handsFolded");
     }
-    console.log("Added to handsFolded");
+    
+
+    if (message == 'getCurrentTab') {
+        return getCurrentTab()
+    }
 });
 
 
