@@ -6,9 +6,6 @@
 //   const user = document.getElementsByClassName("you-player")[0];
   
 // });
-
-
-
 // // config for DOM Observer
 // // const config = { attributes: true };
 
@@ -23,22 +20,6 @@
 // //   subtree: true
 // // });
 
-
-
-// // function getCurrentTab() {
-// //   var activeTabUrl = "";
-
-  
-// //   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-// //     // since only one tab should be active and in the current window at once
-// //     // the return variable should only have one entry
-// //     var activeTab = tabs[0];
-// //     activeTabUrl = activeTab.url;
-
-// //     alert(activeTab.url);
-// //     return activeTab.url;
-// //   });
-// // }
 
 
 function addMessage(m) {

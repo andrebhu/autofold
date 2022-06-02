@@ -47,17 +47,52 @@
 
 
 
-chrome.storage.local.get(["range"], (result) => {
-    console.log(result.range);
-});
+// chrome.storage.local.get(["range"], (result) => {
+//     // const e = document.createElement('div');
+//     // e.innerHTML = result.range;
+
+//     // document.body.appendChild(e);
+//     // console.log(result.range);
+
+//     range = result.range;
+// });
 
 
-chrome.storage.local.get(["fold"], (result) => {
-    console.log(result.fold);
-});
+function createRangeTable() {
+    const container = $('.range-container');
+    chrome.storage.local.get(["fold", "range"], (result) => {
 
-chrome.storage.sync.get(["handsFolded"], (result) => {
-    console.log(result.handsFolded);
-});
+        console.log(result.fold);
+        console.log(result.fold[44]);
 
 
+
+        for (let i = 0; i < 13; i++) {
+            for (let j = 0; j < 13; j++) {
+                let index = (i * 13) + j;
+                let name = result.range[index].split(" ").join("")
+                if (result.fold[index] == true) {
+                    container.append(`<label for="${name}">${name}</label>`);
+                    container.append(`<input type="checkbox" id="${name}" name="${result.range[index]}" checked>`);
+                }
+                else {
+                    container.append(`<label for="${name}">${name}</label>`);
+                    container.append(`<input type="checkbox" id="${name}" name="${result.range[index]}">`);
+                }
+                
+            }
+            container.append('<br>')
+        }
+    });
+}
+
+createRangeTable();
+
+
+
+// chrome.storage.sync.get(["handsFolded"], (result) => {
+//     // const e = document.createElement('div');
+//     // e.innerHTML = result.result;
+//     // document.body.appendChild(e);
+//     console.log(result.handsFolded);
+// });
