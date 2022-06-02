@@ -45,10 +45,19 @@
 // // Initialize the page by constructing the color options
 // constructOptions(presetButtonColors);
 
-function constructRange() {
-    chrome.storage.sync.get(["range"], (result) => {
-        console.log(result.range);
-    });
-}
 
-constructRange();
+
+chrome.storage.local.get(["range"], (result) => {
+    console.log(result.range);
+});
+
+
+chrome.storage.local.get(["fold"], (result) => {
+    console.log(result.fold);
+});
+
+chrome.storage.sync.get(["handsFolded"], (result) => {
+    console.log(result.handsFolded);
+});
+
+
