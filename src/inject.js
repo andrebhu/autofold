@@ -15,6 +15,9 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
+
+
 // click 'fold'
 function click_fold() {
     sleep(1000);
@@ -45,6 +48,7 @@ let observer = new MutationObserver(mutationRecords => {
     }
 
     // send cards to extension
+    // https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage 
     window.postMessage({type: "FROM_PAGE", text: JSON.stringify(cards[0]) + " " + JSON.stringify(cards[1])}, "*");
 });
 

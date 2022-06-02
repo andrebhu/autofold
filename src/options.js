@@ -44,3 +44,11 @@
 
 // // Initialize the page by constructing the color options
 // constructOptions(presetButtonColors);
+
+function constructRange() {
+    chrome.storage.sync.get(["range"], (result) => {
+        console.log(result.range);
+    });
+}
+
+constructRange();
