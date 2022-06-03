@@ -12,9 +12,7 @@ function injectScript(file_path, tag) {
     node.appendChild(script);
 }
 
-injectScript(chrome.runtime.getURL('inject.js'), 'body');
-
-
+injectScript(chrome.runtime.getURL('js/inject.js'), 'body');
 
 
 
@@ -26,18 +24,38 @@ class Card {
 }
 
 const values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
-const suits = ["s", "h", "c", "d"];
 
-function isSuited(card1, card2) {
-    if (card1.suit == card2.suit) { return true };
-    return false;
-}
+function checkRange(card1, card2) {
+    // return true if fold
+    let suited = false;
+    if (card1.suit == card2.suit) { suited = true; }
 
+    let ret = false;
+    chrome.storage.local.get(["fold", "range"], (result) => {
 
-function checkFold(card1, card2) {
+        
+        let handString = "";
+        let c1 = values.indexOf(card1.value);
+        let c2 = values.indexOf(card2.value);
 
-    // return "don't fold";
-    return "fold";
+        if (c1 < c2) {
+            handString = `${card2.value} ${card1.value}`;
+        } else {
+            handString = `${card1.value} ${card2.value}`;
+        }
+
+        if (suited) {
+            handString = handString + " s";
+        } else {
+            handString = handString + " o";
+        }
+
+        let i = result.range.indexOf(handString);
+        let action = result.fold[i];
+
+        // send back to inject.js
+        window.postMessage({type: "FROM_EXTENSION", text: action}, "*");
+    });
 }
 
 
@@ -51,19 +69,13 @@ window.addEventListener("message", (event) => {
     }
 
     if (event.data.type && (event.data.type == "FROM_PAGE")) {
-        console.log("Content script received: ");
-        console.log(event.data.text);
+        
+        console.log(`content.js received ${event.data.text}`);
 
         // parse cards
         let card1 = JSON.parse(event.data.text.split(" ")[0]);
         let card2 = JSON.parse(event.data.text.split(" ")[1]);
 
-        console.log("content.js");
-
-        // console.log(handsFolded);
-        
-
-        // send back to inject.js
-        window.postMessage({type: "FROM_EXTENSION", text: "From content.js"}, "*");
+        checkRange(card1, card2);       
     }
 }, false);

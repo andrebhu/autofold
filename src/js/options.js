@@ -1,3 +1,63 @@
+function handleButtonClick() {
+    var fold = Array(169);
+    const rangeTable = $('#range');
+
+    for (let i = 0; i < 169; i++) {
+        let e = $(`#${i}`);
+
+        if (e.is(":checked")) {
+            fold[i] = true;
+        }
+        else {
+            fold[i] = false;
+        }
+    }    
+    chrome.storage.local.set({"fold": fold}, () => {
+        console.log("Reached here!");
+    });    
+}
+
+
+
+function createRangeTable() {
+    const rangeTable = $('#range');
+
+    chrome.storage.local.get(["fold", "range"], (result) => {
+        for (let i = 0; i < 13; i++) {
+            for (let j = 0; j < 13; j++) {
+                let index = (i * 13) + j;
+                let name = result.range[index].replaceAll("10", "T").split(" ").join("");
+
+                // remove `o` from pocket pairs
+                if (name[0] == name[1]) {
+                    name = name.slice(0, name.length - 1);
+                }
+
+                if (result.fold[index] == true) {
+                    rangeTable.append(`<label for="${index}">${name}</label>`);
+                    rangeTable.append(`<input type="checkbox" id="${index}" name="${result.range[index]}" checked>`);
+                }
+                else {
+                    rangeTable.append(`<label for="${index}">${name}</label>`);
+                    rangeTable.append(`<input type="checkbox" id="${index}" name="${result.range[index]}">`);
+                }                
+            }
+            rangeTable.append('<br>');
+        }
+
+        // create save button
+        let button = document.createElement("button");
+        button.addEventListener("click", handleButtonClick);
+        button.innerText = "Save";
+        rangeTable.append(button);
+    });
+}
+
+createRangeTable();
+
+
+
+
 // let page = document.getElementById("buttonDiv");
 // let selectedClassName = "current";
 // const presetButtonColors = ["#3aa757", "#e8453c", "#f9bb2d", "#4688f1"];
@@ -45,79 +105,5 @@
 // // Initialize the page by constructing the color options
 // constructOptions(presetButtonColors);
 
-function handleButtonClick() {
-    var fold = Array(169);
-    const rangeTable = $('#range');
 
-    for (let i = 0; i < 169; i++) {
-        let e = $(`#${i}`);
-
-        if (e.is(":checked")) {
-            fold[i] = true;
-        }
-        else {
-            fold[i] = false;
-        }
-    }    
-    chrome.storage.local.set({"fold": fold}, () => {
-        console.log("Reached here!");
-    });    
-}
-
-
-
-function createRangeTable() {
-    const rangeTable = $('#range');
-
-    chrome.storage.local.get(["fold", "range"], (result) => {
-        for (let i = 0; i < 13; i++) {
-            for (let j = 0; j < 13; j++) {
-                let index = (i * 13) + j;
-                let name = result.range[index].replaceAll("10", "T").split(" ").join("");
-
-                // flip first two characters if i >= j
-                if (i >= j) {
-                    name = name[1] + name[0] + name[2];
-                }
-                // remove `o` from pocket pairs
-                if (name[0] == name[1]) {
-                    name = name.slice(0, name.length - 1);
-                }
-
-
-                if (result.fold[index] == true) {
-                    rangeTable.append(`<label for="${index}">${name}</label>`);
-                    rangeTable.append(`<input type="checkbox" id="${index}" name="${result.range[index]}" checked>`);
-                }
-                else {
-                    rangeTable.append(`<label for="${index}">${name}</label>`);
-                    rangeTable.append(`<input type="checkbox" id="${index}" name="${result.range[index]}">`);
-                }                
-            }
-            rangeTable.append('<br>');
-        }
-
-
-        // create save button
-        let button = document.createElement("button");
-        button.addEventListener("click", handleButtonClick);
-        button.innerText = "Save";
-        rangeTable.append(button);
-
-    });
-}
-
-
-
-createRangeTable();
-
-
-
-
-
-// chrome.storage.sync.get(["handsFolded"], (result) => {
-//     // const e = document.createElement('div');
-//     // e.innerHTML = result.result;
-//     // document.body.appendChild(e);
-//     console.log(result.handsFolded);
-// });
+// TODO: https://stackoverflow.com/questions/36754940/check-multiple-checkboxes-with-click-drag

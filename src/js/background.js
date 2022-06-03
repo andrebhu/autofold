@@ -1,13 +1,12 @@
 console.log("background.js!");
 
 // create ranges
-// class Hand {
-//     constructor(values, suited) {
-//         this.values = values;
-//         this.suited = suited;
-//         this.fold = false;
-//     }
-// }
+class Hand {
+    constructor(values, suited) {
+        this.values = values;
+        this.suited = suited;
+    }
+}
 
 const values = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
 
@@ -24,34 +23,39 @@ chrome.runtime.onInstalled.addListener(() => {
             for(let j = 0; j < values.length; j++) {
                 if (i > j) {
                     // hands.push(new Hand([values[i], values[j]], false));
-                    hands.push(values[i] + " " + values[j]+ " " + "s");
+                    hands.push(values[j] + " " + values[i] + " " + "s");
                 }
                 else {
                     // hands.push(new Hand([values[i], values[j]], true));
-                    hands.push(values[i] + " " + values[j]+ " " + "o");
+                    hands.push(values[i] + " " + values[j] + " " + "o");
                 }
             }
         }
+
+        console.log(hands);
         chrome.storage.local.set({"range": hands});
 
 
         // create associated booleans that map to hands
-        let fold = new Array(169).fill(false);
+        let fold = new Array(169).fill(true);
         chrome.storage.local.set({"fold": fold});
 });
 
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message == 'get-range') {
-        console.log("Received checkHand...");
-        sendResponse();
-    }
 
-    if (message == 'addFolded') {
-        chrome.storage.sync.get(['handsFolded'], function(result) {
-            let i = result['handsFolded'] + 1;
-            chrome.storage.sync.set({ 'handsFolded': i});
-        });
-        console.log("Added to handsFolded");
-    }
-});
+
+
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//     if (message == 'get-range') {
+//         console.log("Received checkHand...");
+//         sendResponse();
+//     }
+
+//     if (message == 'addFolded') {
+//         chrome.storage.sync.get(['handsFolded'], function(result) {
+//             let i = result['handsFolded'] + 1;
+//             chrome.storage.sync.set({ 'handsFolded': i});
+//         });
+//         console.log("Added to handsFolded");
+//     }
+// });
