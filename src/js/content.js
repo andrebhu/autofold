@@ -25,8 +25,6 @@ class Card {
 
 const values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
 
-
-
 function checkRange(card1, card2) {
     // return true if fold
     let suited = false;
@@ -58,6 +56,12 @@ function checkRange(card1, card2) {
         if (action == false) {
             var sound = new Audio(chrome.runtime.getURL("/media/alert.mp3"));
             sound.play();
+        } else {
+            chrome.storage.local.get(["handsFolded"], (result) => {
+                let i = result.handsFolded + 1;
+                console.log(`Folded a total of ${i} hands`);
+                chrome.storage.local.set({"handsFolded": i});
+            })
         }
 
         // send back to inject.js
@@ -74,13 +78,13 @@ window.addEventListener("message", (event) => {
     }
 
     if (event.data.type && (event.data.type == "FROM_PAGE")) {
-        
-        // console.log(`content.js received ${event.data.text}`);
-
         // parse cards
-        let card1 = JSON.parse(event.data.text.split(" ")[0]);
-        let card2 = JSON.parse(event.data.text.split(" ")[1]);
+        if (event.data.text) {
+            console.log(`Received: ${event.data.text}`);
+            let card1 = JSON.parse(event.data.text.split(" ")[0]);
+            let card2 = JSON.parse(event.data.text.split(" ")[1]);
+            checkRange(card1, card2);
+        }
 
-        checkRange(card1, card2);       
     }
 }, false);

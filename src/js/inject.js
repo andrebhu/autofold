@@ -5,10 +5,6 @@ class Card {
     }
 }
 
-// find elements
-const player = document.getElementsByClassName("you-player")[0];
-const tablePlayerCards = player.getElementsByClassName("table-player-cards")[0];
-
 
 // click 'fold'
 function click_fold() {
@@ -35,20 +31,16 @@ let observer = new MutationObserver(mutationRecords => {
             let value = e.getElementsByClassName("value")[0].innerHTML;
             let suit = e.getElementsByClassName("suit")[0].innerHTML;
             cards.push(new Card(value, suit));
+
+            // send cards to extension 
+            // https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage 
+            // would sometimes send one card and undefined, extra check
+            if (cards.length == 2) { 
+                window.postMessage({type: "FROM_PAGE", text: JSON.stringify(cards[0]) + " " + JSON.stringify(cards[1])}, "*");
+            }        
         }
-        
-    }
-
-    // send cards to extension
-    // https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage 
-
-    // making sure cards has 2 elements before sending
-    if (cards.length == 2) { 
-        window.postMessage({type: "FROM_PAGE", text: JSON.stringify(cards[0]) + " " + JSON.stringify(cards[1])}, "*");
     }
 });
-
-
 
 
 // receive information from extension
@@ -57,15 +49,17 @@ window.addEventListener("message", (event) => {
         return;
     }
     if (event.data.type && (event.data.type == "FROM_EXTENSION")) {
-
         if (event.data.text == true) {
             click_fold();
         }
-        else {
-            // TODO: notification stuff here
-        }
     }
 })
+
+
+
+// find elements
+const player = document.getElementsByClassName("you-player")[0];
+const tablePlayerCards = player.getElementsByClassName("table-player-cards")[0];
 
 
 // create observers

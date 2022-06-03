@@ -9,10 +9,9 @@
 const values = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
 
 chrome.runtime.onInstalled.addListener(() => {
-        // let handsFolded = 0;
-        // chrome.storage.sync.set({"handsFolded": 0});
-        // chrome.storage.sync.set(handsFolded);
-
+        // tracker for number of hands folded
+        chrome.storage.local.set({"handsFolded": 0});
+    
         // create range hands
         // NOTE: had issues with storing chrome.storage as an object so 
         // falling back to using a string
@@ -34,7 +33,7 @@ chrome.runtime.onInstalled.addListener(() => {
         chrome.storage.local.set({"range": hands});
 
         // create associated booleans that map to hands
-        let fold = new Array(169).fill(false);
+        let fold = new Array(169).fill(true);
         chrome.storage.local.set({"fold": fold});
 });
 
