@@ -57,6 +57,10 @@ window.addEventListener("message", (event) => {
 
 
 
+
+
+
+
 // find elements
 const player = document.getElementsByClassName("you-player")[0];
 const tablePlayerCards = player.getElementsByClassName("table-player-cards")[0];
