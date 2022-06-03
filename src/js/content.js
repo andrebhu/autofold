@@ -56,7 +56,7 @@ function checkRange(card1, card2) {
         // if not folding play sound on potential hand
         if (action == false) {
             var sound = new Audio(chrome.runtime.getURL("/media/alert.mp3"));
-            sound.volume = 0.1;
+            sound.volume = 0.3;
             sound.play();
         } else { // increment handsFolded counter
             chrome.storage.local.get(["handsFolded"], (result) => {
@@ -65,7 +65,6 @@ function checkRange(card1, card2) {
                 chrome.storage.local.set({"handsFolded": i});
             })
         }
-
 
         // send back to inject.js
         window.postMessage({type: "FROM_EXTENSION", text: action}, "*");
@@ -82,6 +81,8 @@ window.addEventListener("message", (event) => {
 
     if (event.data.type && (event.data.type == "FROM_PAGE")) {
         if (event.data.text) {
+            console.log(event.data.text);
+
             let card1 = JSON.parse(event.data.text.split(" ")[0]);
             let card2 = JSON.parse(event.data.text.split(" ")[1]);
             checkRange(card1, card2);

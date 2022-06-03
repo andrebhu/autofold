@@ -74,7 +74,7 @@ function createRangeTable() {
                 }
               });
 
-
+              box.addEventListener("click", handleSaveButton);
 
               rangeTable.append(box);
           }
@@ -82,10 +82,10 @@ function createRangeTable() {
       }
 
       // create save button
-      let button = document.createElement("button");
-      button.addEventListener("click", handleSaveButton);
-      button.innerText = "Save";
-      rangeTable.append(button);
+      // let button = document.createElement("button");
+      // button.addEventListener("click", handleSaveButton);
+      // button.innerText = "Save";
+      // rangeTable.append(button);
   });
 }
 
