@@ -2,13 +2,3 @@
     margin: auto;
     border: 2px solid green;
 }
-
-.foldTrueButton {
-    background-color: #ec1212;
-    border: 2px #111111;
-}
-
-.foldFalseButton {
-    background-color: #78b943;
-    border: 2px #111111;
-}

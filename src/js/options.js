@@ -45,48 +45,73 @@
 // // Initialize the page by constructing the color options
 // constructOptions(presetButtonColors);
 
+function handleButtonClick() {
+    var fold = Array(169);
+    const rangeTable = $('#range');
 
+    for (let i = 0; i < 169; i++) {
+        let e = $(`#${i}`);
 
-// chrome.storage.local.get(["range"], (result) => {
-//     // const e = document.createElement('div');
-//     // e.innerHTML = result.range;
+        if (e.is(":checked")) {
+            fold[i] = true;
+        }
+        else {
+            fold[i] = false;
+        }
+    }    
+    chrome.storage.local.set({"fold": fold}, () => {
+        console.log("Reached here!");
+    });    
+}
 
-//     // document.body.appendChild(e);
-//     // console.log(result.range);
-
-//     range = result.range;
-// });
 
 
 function createRangeTable() {
-    const container = $('.range-container');
+    const rangeTable = $('#range');
+
     chrome.storage.local.get(["fold", "range"], (result) => {
-
-        console.log(result.fold);
-        console.log(result.fold[44]);
-
-
-
         for (let i = 0; i < 13; i++) {
             for (let j = 0; j < 13; j++) {
                 let index = (i * 13) + j;
-                let name = result.range[index].split(" ").join("")
+                let name = result.range[index].replaceAll("10", "T").split(" ").join("");
+
+                // flip first two characters if i >= j
+                if (i >= j) {
+                    name = name[1] + name[0] + name[2];
+                }
+                // remove `o` from pocket pairs
+                if (name[0] == name[1]) {
+                    name = name.slice(0, name.length - 1);
+                }
+
+
                 if (result.fold[index] == true) {
-                    container.append(`<label for="${name}">${name}</label>`);
-                    container.append(`<input type="checkbox" id="${name}" name="${result.range[index]}" checked>`);
+                    rangeTable.append(`<label for="${index}">${name}</label>`);
+                    rangeTable.append(`<input type="checkbox" id="${index}" name="${result.range[index]}" checked>`);
                 }
                 else {
-                    container.append(`<label for="${name}">${name}</label>`);
-                    container.append(`<input type="checkbox" id="${name}" name="${result.range[index]}">`);
-                }
-                
+                    rangeTable.append(`<label for="${index}">${name}</label>`);
+                    rangeTable.append(`<input type="checkbox" id="${index}" name="${result.range[index]}">`);
+                }                
             }
-            container.append('<br>')
+            rangeTable.append('<br>');
         }
+
+
+        // create save button
+        let button = document.createElement("button");
+        button.addEventListener("click", handleButtonClick);
+        button.innerText = "Save";
+        rangeTable.append(button);
+
     });
 }
 
+
+
 createRangeTable();
+
+
 
 
 

@@ -23,7 +23,7 @@
 
 
 function addMessage(m) {
-  $("#messages").append("<div class='message'>" + m + "</div>");
+  $("#messages").append(`<div class='message'>${m}</div>`);
 
   setTimeout(function() {
     $(".message").remove();

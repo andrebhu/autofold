@@ -25,12 +25,12 @@
     "permissions": ["storage", "activeTab", "scripting", "tabs"],
 
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "js/background.js"
     },
     
     "content_scripts": [
         {
-            "js": ["content.js", "js/jquery-3.6.0.min.js"],
+            "js": ["js/content.js", "js/jquery-3.6.0.min.js"],
             "matches": ["https://www.pokernow.club/games/*"],
             "run_at": "document_idle"
         }
@@ -38,7 +38,7 @@
 
 
     "web_accessible_resources": [{
-        "resources": ["inject.js"],
+        "resources": ["js/inject.js"],
         "matches": ["<all_urls>"]
     }],
 

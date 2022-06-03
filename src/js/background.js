@@ -22,7 +22,7 @@ chrome.runtime.onInstalled.addListener(() => {
         let hands = [];
         for (let i = 0; i < values.length; i++) {
             for(let j = 0; j < values.length; j++) {
-                if (i >= j) {
+                if (i > j) {
                     // hands.push(new Hand([values[i], values[j]], false));
                     hands.push(values[i] + " " + values[j]+ " " + "s");
                 }

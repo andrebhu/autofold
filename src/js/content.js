@@ -18,9 +18,6 @@ injectScript(chrome.runtime.getURL('inject.js'), 'body');
 
 
 
-
-
-
 class Card {
     constructor(value, suit) {
         this.value = value; // 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K, A
