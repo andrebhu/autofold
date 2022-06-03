@@ -15,12 +15,6 @@ If your extension doesn't work, try the following:
 - disable adblockers
 
 
-## todo
-- wait until game starts/existing card container before checking
-- add ranges for different positions?
-- write how to install
-
-
 ## bugs
 - good hand sound plays again when winning a hand
 - extension only loads sometimes
