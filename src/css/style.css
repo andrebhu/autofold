@@ -1,19 +1,33 @@
 body {
     margin: auto;
-    text-align: center;
     padding: 10px;
-    width: 600px;
+
+    text-align: center;
+    
+    width: 500px;
+
+    /* font-family: "FreeMono", monospace; */
 }
 
-label {
-    width: 6px;
-    margin-right: .5px;
-    padding-top: 1.5px;
-  }
+
+.box {
+    background-color: gainsboro;
+    border: 1px solid black;
+    border-radius: 2px;
+    display: inline-block;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 1px;
+    width: 30px;
+    height: 30px;
+}
 
 
 
 .container {
     margin: auto;
     border: 2px solid green;
+    padding: 5px;
 }

@@ -33,7 +33,5 @@
     "web_accessible_resources": [{
         "resources": ["js/inject.js", "media/alert.mp3"],
         "matches": ["<all_urls>"]
-    }],
-
-    "options_page": "options.html"
+    }]
 }

@@ -1,4 +1,4 @@
-function handleButtonClick() {
+function handleSaveButton() {
   var fold = Array(169);
   const rangeTable = $('#range');
 
@@ -17,6 +17,7 @@ function handleButtonClick() {
 
 
 
+
 function createRangeTable() {
   const rangeTable = $('#range');
 
@@ -31,21 +32,59 @@ function createRangeTable() {
                   name = name.slice(0, name.length - 1);
               }
 
+              let box = document.createElement("div");
+              box.setAttribute("class", "box");
+
+              // create label for checkbox
+              let checkboxLabel = document.createElement("label");
+              checkboxLabel.setAttribute("for", `${index}`);
+              checkboxLabel.innerHTML = `${name}`;
+              // rangeTable.append(checkboxLabel);
+              box.append(checkboxLabel);
+
+              // create checkbox
+              let checkbox = document.createElement("input");
+              checkbox.setAttribute("type", "checkbox");
+              checkbox.setAttribute("id", `${index}`);
+              checkbox.setAttribute("name", `${result.range[index]}`);
+              checkbox.style.display = "none";
+              
+              // check checkbox if already set from local storage
               if (result.fold[index] == true) {
-                  rangeTable.append(`<label for="${index}">${name}</label>`);
-                  rangeTable.append(`<input type="checkbox" id="${index}" name="${result.range[index]}" checked>`);
+                  checkbox.checked = true;
+                  box.style.backgroundColor = "lightseagreen";
               }
-              else {
-                  rangeTable.append(`<label for="${index}">${name}</label>`);
-                  rangeTable.append(`<input type="checkbox" id="${index}" name="${result.range[index]}">`);
-              }
+
+              // rangeTable.append(checkbox);
+              box.append(checkbox);
+              
+
+
+              // adding click listener for the entire box
+              // should probably handle this in a seperate function but will figure that out later
+              box.addEventListener("click", function() {
+                let e = document.getElementById(`${index}`);
+
+                if (e.checked == false) {
+                  e.checked = true;
+                  box.style.backgroundColor = "lightseagreen";
+                } else {
+                  e.checked = false;
+                  box.style.backgroundColor = "gainsboro";
+                }
+              });
+              // box.addEventListener("click", handleClickBox());
+
+
+
+              rangeTable.append(box);
           }
           rangeTable.append('<br>');
       }
 
       // create save button
       let button = document.createElement("button");
-      button.addEventListener("click", handleButtonClick);
+      button.addEventListener("click", handleSaveButton);
       button.innerText = "Save";
       rangeTable.append(button);
   });
