@@ -2,7 +2,7 @@
 // https://stackoverflow.com/questions/54619817/how-to-fix-unchecked-runtime-lasterror-could-not-establish-connection-receivi
 // https://developer.chrome.com/docs/extensions/mv3/content_scripts/#host-page-communication
 
-
+// inject inject.js
 function injectScript(file_path, tag) {
     var node = document.getElementsByTagName(tag)[0];
     var script = document.createElement('script');
@@ -25,15 +25,14 @@ class Card {
 
 const values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
 
+
+
 function checkRange(card1, card2) {
     // return true if fold
     let suited = false;
     if (card1.suit == card2.suit) { suited = true; }
 
-    let ret = false;
     chrome.storage.local.get(["fold", "range"], (result) => {
-
-        
         let handString = "";
         let c1 = values.indexOf(card1.value);
         let c2 = values.indexOf(card2.value);
@@ -50,15 +49,21 @@ function checkRange(card1, card2) {
             handString = handString + " o";
         }
 
+        // find index and check `fold` array for action
         let i = result.range.indexOf(handString);
         let action = result.fold[i];
+
+
+        // if not folding play sound on potential hand
+        if (action == false) {
+            var sound = new Audio(chrome.runtime.getURL("/media/alert.mp3"));
+            sound.play();
+        }
 
         // send back to inject.js
         window.postMessage({type: "FROM_EXTENSION", text: action}, "*");
     });
 }
-
-
 
 
 
@@ -70,7 +75,7 @@ window.addEventListener("message", (event) => {
 
     if (event.data.type && (event.data.type == "FROM_PAGE")) {
         
-        console.log(`content.js received ${event.data.text}`);
+        // console.log(`content.js received ${event.data.text}`);
 
         // parse cards
         let card1 = JSON.parse(event.data.text.split(" ")[0]);

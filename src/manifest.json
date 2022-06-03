@@ -8,21 +8,15 @@
     "action": {
         "default_popup": "popup.html",
         "default_icon": {
-            "16": "/images/get_started16.png",
-            "32": "/images/get_started32.png",
-            "48": "/images/get_started48.png",
-            "128": "/images/get_started128.png"
+            "128": "/images/poker.png"
         }
     },
     
     "icons": {
-        "16": "/images/get_started16.png",
-        "32": "/images/get_started32.png",
-        "48": "/images/get_started48.png",
-        "128": "/images/get_started128.png"
+        "128": "/images/poker.png"
     },
 
-    "permissions": ["storage", "activeTab", "scripting", "tabs"],
+    "permissions": ["storage", "activeTab", "scripting"],
 
     "background": {
         "service_worker": "js/background.js"
@@ -37,7 +31,7 @@
     ],
 
     "web_accessible_resources": [{
-        "resources": ["js/inject.js"],
+        "resources": ["js/inject.js", "media/alert.mp3"],
         "matches": ["<all_urls>"]
     }],
 

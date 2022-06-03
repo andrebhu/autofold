@@ -7,17 +7,7 @@ class Card {
 
 // find elements
 const player = document.getElementsByClassName("you-player")[0];
-const card1 = player.getElementsByClassName("card-container")[0];
-const card2 = player.getElementsByClassName("card-container")[1];
-
 const tablePlayerCards = player.getElementsByClassName("table-player-cards")[0];
-
-// sleep function, probably a better way to do this
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-
 
 
 // click 'fold'
@@ -33,8 +23,6 @@ function click_fold() {
         fold_button.click();
     }
 }
-
-
 
 
 // main important code
@@ -68,19 +56,16 @@ window.addEventListener("message", (event) => {
     if (event.source != window) {
         return;
     }
-
     if (event.data.type && (event.data.type == "FROM_EXTENSION")) {
 
         if (event.data.text == true) {
             click_fold();
         }
         else {
-            // TODO: notification stuff here 
+            // TODO: notification stuff here
         }
     }
 })
-
-
 
 
 // create observers
@@ -89,8 +74,3 @@ observer.observe(tablePlayerCards, {
     childList: true,
     subtree: true
 });
-// observer.observe(card2, {
-//     attributes: true,
-//     childList: true,
-//     subtree: true
-// });
