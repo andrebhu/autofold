@@ -11,7 +11,7 @@ function handleSaveButton() {
       else {
           fold[i] = false;
       }
-  }    
+  }
   chrome.storage.local.set({"fold": fold});
 }
 
@@ -52,14 +52,14 @@ function createRangeTable() {
               // check checkbox if already set from local storage
               if (result.fold[index] == true) {
                   checkbox.checked = true;
-                  box.style.backgroundColor = "lightseagreen";
+                  box.style.backgroundColor = "gainsboro";
+              } else {
+                box.style.backgroundColor = "lightseagreen";
               }
 
               // rangeTable.append(checkbox);
               box.append(checkbox);
               
-
-
               // adding click listener for the entire box
               // should probably handle this in a seperate function but will figure that out later
               box.addEventListener("click", function() {
@@ -67,13 +67,12 @@ function createRangeTable() {
 
                 if (e.checked == false) {
                   e.checked = true;
-                  box.style.backgroundColor = "lightseagreen";
+                  box.style.backgroundColor = "gainsboro";
                 } else {
                   e.checked = false;
-                  box.style.backgroundColor = "gainsboro";
+                  box.style.backgroundColor = "lightseagreen";
                 }
               });
-              // box.addEventListener("click", handleClickBox());
 
 
 
