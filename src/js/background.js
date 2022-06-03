@@ -33,7 +33,7 @@ chrome.runtime.onInstalled.addListener(() => {
         chrome.storage.local.set({"range": hands});
 
         // create associated booleans that map to hands
-        let fold = new Array(169).fill(false);
+        let fold = new Array(169).fill(true);
         chrome.storage.local.set({"fold": fold});
 });
 
