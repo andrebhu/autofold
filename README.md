@@ -1,8 +1,13 @@
 # autofold
-
 A chrome extension to automatically fold bad hands. Currently built for pokernow.
 
 ## how to install
+todo
+
+## todo
+- wait until game starts/existing card container before checking
+- add ranges for different positions?
+- write how to install
 
 
 ## debugging
@@ -15,6 +20,11 @@ If your extension doesn't work, try the following:
 - add ranges for different positions?
 - write how to install
 
+
+## bugs
+- good hand sound plays again when winning a hand
+- extension only loads sometimes
+- weird pokernow font issue? might be pokernow related
 
 
 ## resources
