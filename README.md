@@ -2,7 +2,11 @@
 A chrome extension to automatically fold bad hands. Currently built for pokernow.
 
 ## how to install
-todo
+1. download repo
+2. go to chrome://extensions/ in your chrome browser
+3. click `load unpacked`
+4. select the `src` folder
+5. should be good to go
 
 ## todo
 - add ranges for different positions?
