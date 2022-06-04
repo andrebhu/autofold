@@ -8,8 +8,21 @@ class Card {
 
 // click 'fold'
 function click_fold() {
-    var fold_button = document.getElementsByClassName("fold")[0];
-    var checkfold_button = document.getElementsByClassName("check-fold")[0];
+    
+    
+    // retrieve fold and checkfold buttons
+    var fold_button, checkfold_button;
+
+    var buttons = document.getElementsByTagName("button");
+
+    for (var i = 0; i < buttons.length; i++) {
+        if (buttons[i].classList.contains("fold")) {
+            fold_button = buttons[i];
+        }
+        else if (buttons[i].classList.contains("check-fold")) {
+            checkfold_button = buttons[i];
+        }
+    }   
 
     // check if bb, then press `check-fold`
     if (checkfold_button) {
@@ -54,6 +67,17 @@ window.addEventListener("message", (event) => {
         }
     }
 })
+
+
+
+// prevent extension from loading too fast?
+// temporary solution, add a function to check for the object
+function sleep(ms) {
+    return new Promise(resolveFunc => setTimeout(resolveFunc, ms));
+  }
+
+sleep(3000);
+
 
 
 // find elements
