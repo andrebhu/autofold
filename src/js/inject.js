@@ -21,7 +21,7 @@ function click_fold() {
         console.log(checkfold_button);
         checkfold_button.click();
     }
-    else {
+    else if (fold_button) {
         console.log(fold_button);
         fold_button.click();
     }

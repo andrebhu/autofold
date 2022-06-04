@@ -74,6 +74,8 @@ function checkRange(card1, card2) {
 
 
 // receive data from inject.js and respond
+let prev_card1, prev_card2;
+
 window.addEventListener("message", (event) => {
     if (event.source != window) {
         return;
@@ -85,6 +87,12 @@ window.addEventListener("message", (event) => {
 
             let card1 = JSON.parse(event.data.text.split(" ")[0]);
             let card2 = JSON.parse(event.data.text.split(" ")[1]);
+
+            // receives event on showdown, store previous card
+            if (!(prev_card1 == card1 || prev_card2 == card2)) {
+                prev_card1 = card1;
+                prev_card2 = card2;
+            }
             checkRange(card1, card2);
         }
     }
