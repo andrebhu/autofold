@@ -19,6 +19,7 @@ If your extension doesn't work, try the following:
 - good hand sound plays again when winning a hand
 - extension only loads sometimes
 - weird pokernow font issue? might be pokernow related
+- thinking players that are away mess up the hands
 
 
 ## resources
