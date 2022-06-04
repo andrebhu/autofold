@@ -32,6 +32,8 @@ function createRangeTable() {
                   name = name.slice(0, name.length - 1);
               }
 
+
+              // some disgusting code below that should be put into a different function but works
               let box = document.createElement("div");
               box.setAttribute("class", "box");
 
@@ -54,7 +56,7 @@ function createRangeTable() {
                   checkbox.checked = true;
                   box.style.backgroundColor = "gainsboro";
               } else {
-                box.style.backgroundColor = "lightseagreen";
+                box.style.backgroundColor = "lightgreen";
               }
 
               // rangeTable.append(checkbox);
@@ -70,7 +72,7 @@ function createRangeTable() {
                   box.style.backgroundColor = "gainsboro";
                 } else {
                   e.checked = false;
-                  box.style.backgroundColor = "lightseagreen";
+                  box.style.backgroundColor = "lightgreen";
                 }
               });
 

@@ -1,18 +1,7 @@
-class Card {
-    constructor(value, suit) {
-        this.value = value;
-        this.suit = suit;
-    }
-}
-
-
 // click 'fold'
 function click_fold() {
-    
-    
     // retrieve fold and checkfold buttons
     var fold_button, checkfold_button;
-
     var buttons = document.getElementsByTagName("button");
 
     for (var i = 0; i < buttons.length; i++) {
@@ -22,19 +11,45 @@ function click_fold() {
         else if (buttons[i].classList.contains("check-fold")) {
             checkfold_button = buttons[i];
         }
-    }   
+    }
 
-    // check if bb, then press `check-fold`
+    // debugging
+    console.log("Debug check/fold button:");
+
+
     if (checkfold_button) {
+        console.log(checkfold_button);
         checkfold_button.click();
     }
     else {
+        console.log(fold_button);
         fold_button.click();
     }
 }
 
+// receive information from extension
+window.addEventListener("message", (event) => {
+    if (event.source != window) {
+        return;
+    }
+    if (event.data.type && (event.data.type == "FROM_EXTENSION")) {
+        if (event.data.text == true) {
+            click_fold();
+        }
+    }
+})
 
-// main important code
+
+
+
+// read webpage and send cards back to extension
+class Card {
+    constructor(value, suit) {
+        this.value = value;
+        this.suit = suit;
+    }
+}
+
 let observer = new MutationObserver(mutationRecords => {
     var cards = [];
     for (let record of mutationRecords) {
@@ -56,38 +71,31 @@ let observer = new MutationObserver(mutationRecords => {
 });
 
 
-// receive information from extension
-window.addEventListener("message", (event) => {
-    if (event.source != window) {
-        return;
-    }
-    if (event.data.type && (event.data.type == "FROM_EXTENSION")) {
-        if (event.data.text == true) {
-            click_fold();
+
+
+
+async function createObservers() {
+    try{
+        let table = document.getElementsByClassName("table")[0];
+        var player = table.getElementsByClassName("you-player")[0];
+        var tablePlayerCards = player.getElementsByClassName("table-player-cards")[0];
+
+        if (table && player && tablePlayerCards) {
+            observer.observe(tablePlayerCards, {
+                attributes: true,
+                childList: true,
+                subtree: true
+            });
+
+            console.log("Observer created!");
+            return true;
         }
+    } catch (error) {
+        console.log("Could not find cards...");
+        // return false;
+        await new Promise(r => setTimeout(r, 3000));
+        createObservers();
     }
-})
+}
 
-
-
-// prevent extension from loading too fast?
-// temporary solution, add a function to check for the object
-function sleep(ms) {
-    return new Promise(resolveFunc => setTimeout(resolveFunc, ms));
-  }
-
-sleep(3000);
-
-
-
-// find elements
-const player = document.getElementsByClassName("you-player")[0];
-const tablePlayerCards = player.getElementsByClassName("table-player-cards")[0];
-
-
-// create observers
-observer.observe(tablePlayerCards, {
-    attributes: true,
-    childList: true,
-    subtree: true
-});
+createObservers();
