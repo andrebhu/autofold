@@ -14,15 +14,14 @@ function click_fold() {
     }
 
     // debugging
-    console.log("Debug check/fold button:");
-
+    // console.log("Debug check/fold button:");
 
     if (checkfold_button) {
-        console.log(checkfold_button);
+        // console.log(checkfold_button);
         checkfold_button.click();
     }
     else if (fold_button) {
-        console.log(fold_button);
+        // console.log(fold_button);
         fold_button.click();
     }
 }
@@ -43,6 +42,16 @@ window.addEventListener("message", (event) => {
 
 
 // read webpage and send cards back to extension
+class Hand {
+    constructor(value1, suit1, value2, suit2) {
+        this.value1 = value1;
+        this.suit1 = suit1;
+        this.value2 = value2;
+        this.suit2 = suit2;
+        this.url = window.location.href;
+    }
+}
+
 class Card {
     constructor(value, suit) {
         this.value = value;
@@ -50,30 +59,37 @@ class Card {
     }
 }
 
-let observer = new MutationObserver(mutationRecords => {
+let observer = new MutationObserver(mutationRecords => {    
     var cards = [];
+
     for (let record of mutationRecords) {
-        let e = record["target"];
-        
-        if (e.classList.contains("card-container")) {
+        let e = record["target"];        
+        if (e.classList.contains("card-container")) {            
             let value = e.getElementsByClassName("value")[0].innerHTML;
             let suit = e.getElementsByClassName("suit")[0].innerHTML;
             cards.push(new Card(value, suit));
-
-            // send cards to extension 
-            // https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage 
-            // would sometimes send one card and undefined, extra check
-            if (cards.length == 2) { 
-                window.postMessage({type: "FROM_PAGE", text: JSON.stringify(cards[0]) + " " + JSON.stringify(cards[1])}, "*");
-            }        
         }
     }
+
+    // send cards to extension 
+    // https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage 
+    // would sometimes send one card and undefined, extra check
+    if (cards.length == 2) { 
+        let card1 = cards[0];
+        let card2 = cards[1];
+        let hand = new Hand(card1.value, card1.suit, card2.value, card2.suit);
+
+        console.log(JSON.stringify(hand));
+        window.postMessage({type: "FROM_PAGE", text: JSON.stringify(hand)}, "*");
+        // window.postMessage({type: "FROM_PAGE", text: JSON.stringify(cards[0]) + " " + JSON.stringify(cards[1])}, "*");
+
+    }  
 });
 
 
 
 
-
+// create observers
 async function createObservers() {
     try{
         let table = document.getElementsByClassName("table")[0];
@@ -83,7 +99,6 @@ async function createObservers() {
         if (table && player && tablePlayerCards) {
             observer.observe(tablePlayerCards, {
                 attributes: true,
-                childList: true,
                 subtree: true
             });
 

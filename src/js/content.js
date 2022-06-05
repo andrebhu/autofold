@@ -17,29 +17,23 @@ injectScript(chrome.runtime.getURL('js/inject.js'), 'body');
 
 
 
-class Card {
-    constructor(value, suit) {
-        this.value = value; // 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K, A
-        this.suit = suit; // s, h, c, d
-    }
-}
 
 const values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
 
-function checkRange(card1, card2) {
+function checkRange(hand) {
     // return true if fold
     let suited = false;
-    if (card1.suit == card2.suit) { suited = true; }
+    if (hand.suit1 == hand.suit2) { suited = true; }
 
     chrome.storage.local.get(["fold", "range"], (result) => {
         let handString = "";
-        let c1 = values.indexOf(card1.value);
-        let c2 = values.indexOf(card2.value);
+        let c1 = values.indexOf(hand.card1);
+        let c2 = values.indexOf(hand.card2);
 
         if (c1 < c2) {
-            handString = `${card2.value} ${card1.value}`;
+            handString = `${hand.card2} ${hand.card1}`;
         } else {
-            handString = `${card1.value} ${card2.value}`;
+            handString = `${hand.card1} ${hand.card2}`;
         }
 
         if (suited) {
@@ -56,7 +50,7 @@ function checkRange(card1, card2) {
         // if not folding play sound on potential hand
         if (action == false) {
             var sound = new Audio(chrome.runtime.getURL("/media/alert.mp3"));
-            sound.volume = 0.3;
+            sound.volume = 0.1;
             sound.play();
         } else { // increment handsFolded counter
             chrome.storage.local.get(["handsFolded"], (result) => {
@@ -74,8 +68,6 @@ function checkRange(card1, card2) {
 
 
 // receive data from inject.js and respond
-let prev_card1, prev_card2;
-
 window.addEventListener("message", (event) => {
     if (event.source != window) {
         return;
@@ -83,17 +75,17 @@ window.addEventListener("message", (event) => {
 
     if (event.data.type && (event.data.type == "FROM_PAGE")) {
         if (event.data.text) {
-            console.log(event.data.text);
+            // console.log(event.data.text);
 
-            let card1 = JSON.parse(event.data.text.split(" ")[0]);
-            let card2 = JSON.parse(event.data.text.split(" ")[1]);
+            // let card1 = JSON.parse(event.data.text.split(" ")[0]);
+            // let card2 = JSON.parse(event.data.text.split(" ")[1]);
+
+            let hand = JSON.parse(event.data.text);
 
             // receives event on showdown, store previous card
-            if (!(prev_card1 == card1 || prev_card2 == card2)) {
-                prev_card1 = card1;
-                prev_card2 = card2;
-            }
-            checkRange(card1, card2);
+            // TODO: this doesn't work
+
+            checkRange(hand);
         }
     }
 }, false);

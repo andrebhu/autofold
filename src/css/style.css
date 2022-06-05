@@ -1,15 +1,21 @@
 body {
     margin: auto;
     padding: 10px;
-
     text-align: center;
-    
     width: 500px;
+
+
+    /* disable selecting */
+    -ms-user-select: none;
+    user-select: none;
 }
 
+input {
+    display: none;
+}
 
 .box {
-    border: 1px solid black;
+    border: 1px solid grey;
     border-radius: 2px;
     display: inline-block;
 
@@ -19,8 +25,13 @@ body {
     margin: 1px;
     width: 30px;
     height: 30px;
+
+    transition: box-shadow .1s;
 }
 
+.box:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
+}
 
 
 .container {

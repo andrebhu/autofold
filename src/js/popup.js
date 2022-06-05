@@ -16,6 +16,15 @@ function handleSaveButton() {
 }
 
 
+// variable to keep track of mouse is up or down
+var mouseDown;
+document.body.onmousedown = function() {
+  mouseDown = true;
+}
+document.body.onmouseup = function() {
+  mouseDown = false
+}
+
 
 
 function createRangeTable() {
@@ -32,13 +41,12 @@ function createRangeTable() {
                   name = name.slice(0, name.length - 1);
               }
 
-
               // some disgusting code below that should be put into a different function but works
               let box = document.createElement("div");
               box.setAttribute("class", "box");
 
               // create label for checkbox
-              let checkboxLabel = document.createElement("label");
+              let checkboxLabel = document.createElement("p");
               checkboxLabel.setAttribute("for", `${index}`);
               checkboxLabel.innerHTML = `${name}`;
               // rangeTable.append(checkboxLabel);
@@ -49,7 +57,6 @@ function createRangeTable() {
               checkbox.setAttribute("type", "checkbox");
               checkbox.setAttribute("id", `${index}`);
               checkbox.setAttribute("name", `${result.range[index]}`);
-              checkbox.style.display = "none";
               
               // check checkbox if already set from local storage
               if (result.fold[index] == true) {
@@ -62,32 +69,46 @@ function createRangeTable() {
               // rangeTable.append(checkbox);
               box.append(checkbox);
               
+
+              // HANDLING USER INPUT
               // adding click listener for the entire box
               // should probably handle this in a seperate function but will figure that out later
               box.addEventListener("click", function() {
                 let e = document.getElementById(`${index}`);
-
+              
                 if (e.checked == false) {
                   e.checked = true;
-                  box.style.backgroundColor = "gainsboro";
+                  this.style.backgroundColor = "gainsboro";
                 } else {
                   e.checked = false;
-                  box.style.backgroundColor = "lightgreen";
+                  this.style.backgroundColor = "lightgreen";
                 }
+
+                // save click
+                handleSaveButton();
               });
 
-              box.addEventListener("click", handleSaveButton);
+
+
+              box.addEventListener("onmouseover", function() {
+                if (mouseDown) {
+                  let e = document.getElementById(`${index}`);              
+                  if (e.checked == false) {
+                    e.checked = true;
+                    this.style.backgroundColor = "gainsboro";
+                  } else {
+                    e.checked = false;
+                    this.style.backgroundColor = "lightgreen";
+                  }  
+                  // save click
+                  handleSaveButton();
+                }
+              });
 
               rangeTable.append(box);
           }
           rangeTable.append('<br>');
       }
-
-      // create save button
-      // let button = document.createElement("button");
-      // button.addEventListener("click", handleSaveButton);
-      // button.innerText = "Save";
-      // rangeTable.append(button);
   });
 }
 
