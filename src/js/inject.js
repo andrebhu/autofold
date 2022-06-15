@@ -1,4 +1,6 @@
-// click 'fold'
+
+
+
 function click_fold() {
     // retrieve fold and checkfold buttons
     var fold_button, checkfold_button;
@@ -32,6 +34,8 @@ window.addEventListener("message", (event) => {
         return;
     }
     if (event.data.type && (event.data.type == "FROM_EXTENSION")) {
+
+        console.log("From extension", event.data.text);
         if (event.data.text == true) {
             click_fold();
         }
@@ -78,6 +82,7 @@ let observer = new MutationObserver(mutationRecords => {
         let card1 = cards[0];
         let card2 = cards[1];
         let hand = new Hand(card1.value, card1.suit, card2.value, card2.suit);
+
 
         console.log(JSON.stringify(hand));
         window.postMessage({type: "FROM_PAGE", text: JSON.stringify(hand)}, "*");

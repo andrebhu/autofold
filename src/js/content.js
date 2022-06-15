@@ -8,7 +8,6 @@ function injectScript(file_path, tag) {
     var script = document.createElement('script');
     script.setAttribute('type', 'text/javascript');
     script.setAttribute('src', file_path);
-
     node.appendChild(script);
 }
 
@@ -16,6 +15,14 @@ injectScript(chrome.runtime.getURL('js/inject.js'), 'body');
 
 
 
+function sendToLogtail(data) {
+    var request = new XMLHttpRequest();
+
+    request.open("POST", "https://in.logtail.com", true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", "Bearer vkVN84xjiKbUkvwKo3on1gMJ");
+    request.send(data);
+}
 
 
 const values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
@@ -27,13 +34,13 @@ function checkRange(hand) {
 
     chrome.storage.local.get(["fold", "range"], (result) => {
         let handString = "";
-        let c1 = values.indexOf(hand.card1);
-        let c2 = values.indexOf(hand.card2);
+        let c1 = values.indexOf(hand.value1);
+        let c2 = values.indexOf(hand.value2);
 
         if (c1 < c2) {
-            handString = `${hand.card2} ${hand.card1}`;
+            handString = `${hand.value2} ${hand.value1}`;
         } else {
-            handString = `${hand.card1} ${hand.card2}`;
+            handString = `${hand.value1} ${hand.value2}`;
         }
 
         if (suited) {
@@ -75,16 +82,10 @@ window.addEventListener("message", (event) => {
 
     if (event.data.type && (event.data.type == "FROM_PAGE")) {
         if (event.data.text) {
-            // console.log(event.data.text);
-
-            // let card1 = JSON.parse(event.data.text.split(" ")[0]);
-            // let card2 = JSON.parse(event.data.text.split(" ")[1]);
-
             let hand = JSON.parse(event.data.text);
 
-            // receives event on showdown, store previous card
-            // TODO: this doesn't work
 
+            sendToLogtail(event.data.text);
             checkRange(hand);
         }
     }

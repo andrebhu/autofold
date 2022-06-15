@@ -20,11 +20,11 @@ chrome.runtime.onInstalled.addListener(() => {
             for(let j = 0; j < values.length; j++) {
                 if (i > j) {
                     // hands.push(new Hand([values[i], values[j]], false));
-                    hands.push(values[j] + " " + values[i] + " " + "s");
+                    hands.push(values[j] + " " + values[i] + " " + "o");
                 }
                 else {
                     // hands.push(new Hand([values[i], values[j]], true));
-                    hands.push(values[i] + " " + values[j] + " " + "o");
+                    hands.push(values[i] + " " + values[j] + " " + "s");
                 }
             }
         }
