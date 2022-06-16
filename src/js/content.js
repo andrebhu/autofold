@@ -15,6 +15,8 @@ injectScript(chrome.runtime.getURL('js/inject.js'), 'body');
 
 
 
+
+// is pokernow juiced
 function sendToLogtail(data) {
     var request = new XMLHttpRequest();
 
@@ -59,6 +61,9 @@ function checkRange(hand) {
             var sound = new Audio(chrome.runtime.getURL("/media/alert.mp3"));
             sound.volume = 0.1;
             sound.play();
+
+            sendToLogtail(JSON.stringify(data));
+
         } else { // increment handsFolded counter
             chrome.storage.local.get(["handsFolded"], (result) => {
                 let i = result.handsFolded + 1;
@@ -73,7 +78,6 @@ function checkRange(hand) {
 }
 
 
-
 // receive data from inject.js and respond
 window.addEventListener("message", (event) => {
     if (event.source != window) {
@@ -83,9 +87,6 @@ window.addEventListener("message", (event) => {
     if (event.data.type && (event.data.type == "FROM_PAGE")) {
         if (event.data.text) {
             let hand = JSON.parse(event.data.text);
-
-
-            sendToLogtail(event.data.text);
             checkRange(hand);
         }
     }

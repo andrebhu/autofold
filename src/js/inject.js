@@ -46,6 +46,9 @@ window.addEventListener("message", (event) => {
 
 
 // read webpage and send cards back to extension
+// this could use some improvement
+// also figure out possibly how to read position
+
 class Hand {
     constructor(value1, suit1, value2, suit2) {
         this.value1 = value1;
@@ -66,6 +69,7 @@ class Card {
 let observer = new MutationObserver(mutationRecords => {    
     var cards = [];
 
+    // parse through all mutations
     for (let record of mutationRecords) {
         let e = record["target"];        
         if (e.classList.contains("card-container")) {            
@@ -83,22 +87,27 @@ let observer = new MutationObserver(mutationRecords => {
         let card2 = cards[1];
         let hand = new Hand(card1.value, card1.suit, card2.value, card2.suit);
 
-
         console.log(JSON.stringify(hand));
         window.postMessage({type: "FROM_PAGE", text: JSON.stringify(hand)}, "*");
-        // window.postMessage({type: "FROM_PAGE", text: JSON.stringify(cards[0]) + " " + JSON.stringify(cards[1])}, "*");
-
     }  
 });
 
+
+
+function findTotalPlayers(seats) {
+    var players = seats.getElementsByClassName("table-player");
+
+    return players.length;
+}
 
 
 
 // create observers
 async function createObservers() {
     try{
-        let table = document.getElementsByClassName("table")[0];
-        var player = table.getElementsByClassName("you-player")[0];
+        var table = document.getElementsByClassName("table")[0];
+        var seats = table.getElementsByClassName("seats")[0];
+        var player = seats.getElementsByClassName("you-player")[0];
         var tablePlayerCards = player.getElementsByClassName("table-player-cards")[0];
 
         if (table && player && tablePlayerCards) {
@@ -112,7 +121,6 @@ async function createObservers() {
         }
     } catch (error) {
         console.log("Could not find cards...");
-        // return false;
         await new Promise(r => setTimeout(r, 3000));
         createObservers();
     }

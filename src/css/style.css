@@ -33,9 +33,27 @@ input {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
 }
 
-
 .container {
     margin: auto;
-    /* border: 2px solid green; */
     padding: 5px;
 }
+
+
+#range .ui-selecting { background: lightsalmon; }  
+/* #range .ui-selected { background: lightgoldenrodyellow; color: #000000; }   */
+
+
+.fold {
+    background-color: gainsboro;
+}
+
+.no-fold {
+    background-color: lightgreen;
+}
+
+
+.ui-widget-content {  
+   background: #00ced1;  
+   border: 1px solid #DDDDDD;  
+   color: #8b0a50;  
+}  
