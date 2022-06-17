@@ -4,7 +4,6 @@ body {
     text-align: center;
     width: 500px;
 
-
     /* disable selecting */
     -ms-user-select: none;
     user-select: none;
@@ -39,8 +38,7 @@ input {
 }
 
 
-#range .ui-selecting { background: lightsalmon; }  
-/* #range .ui-selected { background: lightgoldenrodyellow; color: #000000; }   */
+#range .ui-selecting { background-color: lightsalmon; }  
 
 
 .fold {
@@ -52,8 +50,14 @@ input {
 }
 
 
-.ui-widget-content {  
+.ui-selectable-helper {
+    border: none;
+}
+
+
+/* .ui-widget-content .ui-state-focus{  
    background: #00ced1;  
    border: 1px solid #DDDDDD;  
    color: #8b0a50;  
-}  
+   outline: none;
+}   */

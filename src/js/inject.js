@@ -1,11 +1,9 @@
-
-
-
 function click_fold() {
     // retrieve fold and checkfold buttons
     var fold_button, checkfold_button;
     var buttons = document.getElementsByTagName("button");
 
+    // assign buttons
     for (var i = 0; i < buttons.length; i++) {
         if (buttons[i].classList.contains("fold")) {
             fold_button = buttons[i];
@@ -15,18 +13,15 @@ function click_fold() {
         }
     }
 
-    // debugging
-    // console.log("Debug check/fold button:");
-
+    // doing the click
     if (checkfold_button) {
-        // console.log(checkfold_button);
         checkfold_button.click();
     }
     else if (fold_button) {
-        // console.log(fold_button);
         fold_button.click();
     }
 }
+
 
 // receive information from extension
 window.addEventListener("message", (event) => {
@@ -34,14 +29,21 @@ window.addEventListener("message", (event) => {
         return;
     }
     if (event.data.type && (event.data.type == "FROM_EXTENSION")) {
-
-        console.log("From extension", event.data.text);
-        if (event.data.text == true) {
+        if (event.data.text) {
             click_fold();
         }
     }
 })
 
+
+
+
+
+
+function findDealerPosition() {
+    var button = document.getElementsByClassName("dealer-button-ctn")[0];
+    var button_position = parseInt(button.classList[1].split("-")[2]);
+}
 
 
 
@@ -69,6 +71,8 @@ class Card {
 let observer = new MutationObserver(mutationRecords => {    
     var cards = [];
 
+
+    console.log(mutationRecords);
     // parse through all mutations
     for (let record of mutationRecords) {
         let e = record["target"];        
@@ -77,28 +81,20 @@ let observer = new MutationObserver(mutationRecords => {
             let suit = e.getElementsByClassName("suit")[0].innerHTML;
             cards.push(new Card(value, suit));
         }
-    }
+    }   
 
     // send cards to extension 
     // https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage 
     // would sometimes send one card and undefined, extra check
-    if (cards.length == 2) { 
+    if (cards.length == 2) {
         let card1 = cards[0];
         let card2 = cards[1];
         let hand = new Hand(card1.value, card1.suit, card2.value, card2.suit);
-
+        
         console.log(JSON.stringify(hand));
         window.postMessage({type: "FROM_PAGE", text: JSON.stringify(hand)}, "*");
     }  
 });
-
-
-
-function findTotalPlayers(seats) {
-    var players = seats.getElementsByClassName("table-player");
-
-    return players.length;
-}
 
 
 
@@ -125,5 +121,7 @@ async function createObservers() {
         createObservers();
     }
 }
+
+
 
 createObservers();

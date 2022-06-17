@@ -1,6 +1,6 @@
-
 // TODO: can make this more efficient by having the elements modify an array
-function save() {
+// so far no performance issues?
+function saveRangeTable() {
   var fold = Array(169);
   const rangeTable = $('#range');
 
@@ -15,65 +15,31 @@ function save() {
       }
   }
   chrome.storage.local.set({"fold": fold});
-
 }
 
 
-              // HANDLING USER INPUT
-              // adding click listener for the entire box
-              // should probably handle this in a seperate function but will figure that out later
-              // box.addEventListener("click", function() {
-              //   let e = document.getElementById(`${index}`);
-              
-              //   if (e.checked == false) {
-              //     e.checked = true;
-              //     this.style.backgroundColor = "gainsboro";
-              //   } else {
-              //     e.checked = false;
-              //     this.style.backgroundColor = "lightgreen";
-              //   }
 
-              //   // save click
-              //   handleSaveButton();
-              // });
+function resetRangeTable() {
+    let fold = new Array(169).fill(false);
+    chrome.storage.local.set({"fold": fold});
 
+    var rangeTable = document.getElementById("range");
+    var boxes = rangeTable.getElementsByClassName("box");
 
-              // $(box).on("mousedown mouseover", function (e) {
-              //   if (e.buttons == 1 || e.buttons == 3) {
+    for (let box of boxes) {
+        if (box.classList.contains("fold")) {
+            box.classList.remove("fold");
+            box.classList.add("no-fold");
+        }
 
-              //   let obj = document.getElementById(`${index}`);
-              
-              //   if (obj.checked == false) {
-              //     obj.checked = true;
-              //     this.style.backgroundColor = "gainsboro";
-              //   } else {
-              //     obj.checked = false;
-              //     this.style.backgroundColor = "lightgreen";
-              //   }
-
-              //   // save click
-              //   handleSaveButton();
-
-
-                  // $(this).click();
-
-                  // console.log($(this).checked);
-                  // if ($(this).checked) {
-                  //   $(this).checked = false;
-                  //   $(this).css("background-color", "lightgreen");
-                  // } else {
-                  //   $(this).checked = true;
-                  //   $(this).css("background-color", "gainsboro");
-                  // }
-                // }
-              // });
-
-
-              // box.classList.add("selectable");
-              // box.classList.add("ui-state-default");
-
-              // $(box).selectable();
-
+        let checkbox = box.getElementsByTagName('input')[0];
+        if (checkbox.checked) {
+            checkbox.checked = false;
+        } else {
+            checkbox.checked = true;
+        }
+    }
+}
 
 
 function toggleBox(box) {
@@ -93,7 +59,7 @@ function toggleBox(box) {
         checkbox.checked = true;
     }
 
-    save();
+    saveRangeTable();
 }
 
 
@@ -105,7 +71,6 @@ function createBox(name, index, checked) {
 
     // create label for box
     var label = document.createElement("p");
-    label.setAttribute("for", `${index}`);
     label.innerHTML = `${name}`;
 
     // input for keeping track of value
@@ -116,11 +81,9 @@ function createBox(name, index, checked) {
     // set colors
     if (checked) {
         checkbox.checked = true;
-        // box.style.backgroundColor = "gainsboro";      
-        box.classList.add("no-fold");
-    } else {
-        // box.style.backgroundColor = "lightgreen";
         box.classList.add("fold");
+    } else {
+        box.classList.add("no-fold");
     }
 
     box.append(label);
@@ -152,11 +115,11 @@ function createRangeTable() {
           }
           rangeTable.append('<br>');
 
+          // jQuery selectable
           rangeTable.selectable({
             filter: "div",
             selected: function(event, ui) {
                 toggleBox(ui["selected"]);
-                save();
             }
           });
       }
@@ -164,8 +127,18 @@ function createRangeTable() {
 }
 
 
+function createResetButton() {
+    var resetButton = document.createElement("button");
+    resetButton.innerHTML = "Reset Range";
+    resetButton.onclick = function () {
+        resetRangeTable();
+    };
+    document.body.appendChild(resetButton);
+}
+
 
 
 $(document).ready(function () {
     createRangeTable();
+    createResetButton();
 });

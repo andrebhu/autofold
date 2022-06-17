@@ -27,6 +27,19 @@ function sendToLogtail(data) {
 }
 
 
+// return true if same, false if different
+function compareHands(hand1, hand2) {
+    if (!hand1 || !hand2) { return false; }
+
+    if (hand1.value1 == hand2.value1 && hand1.suit1 == hand2.suit1) {
+        if (hand1.value2 == hand2.value2 && hand1.suit2 == hand2.suit2) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 const values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
 
 function checkRange(hand) {
@@ -62,12 +75,12 @@ function checkRange(hand) {
             sound.volume = 0.1;
             sound.play();
 
-            sendToLogtail(JSON.stringify(data));
+            sendToLogtail(JSON.stringify(hand));
 
         } else { // increment handsFolded counter
             chrome.storage.local.get(["handsFolded"], (result) => {
                 let i = result.handsFolded + 1;
-                console.log(`Folded a total of ${i} hands`);
+                // console.log(`Folded a total of ${i} hands`);
                 chrome.storage.local.set({"handsFolded": i});
             })
         }
@@ -78,6 +91,8 @@ function checkRange(hand) {
 }
 
 
+var previousHand;
+
 // receive data from inject.js and respond
 window.addEventListener("message", (event) => {
     if (event.source != window) {
@@ -87,7 +102,12 @@ window.addEventListener("message", (event) => {
     if (event.data.type && (event.data.type == "FROM_PAGE")) {
         if (event.data.text) {
             let hand = JSON.parse(event.data.text);
-            checkRange(hand);
+
+            if (!compareHands(hand, previousHand)) {
+                checkRange(hand);
+            }
+
+            previousHand = hand;
         }
     }
 }, false);
