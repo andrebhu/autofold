@@ -16,7 +16,7 @@
         "128": "/images/poker.png"
     },
 
-    "permissions": ["storage", "activeTab", "scripting"],
+    "permissions": ["storage", "scripting"],
 
     "background": {
         "service_worker": "js/background.js"

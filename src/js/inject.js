@@ -71,8 +71,6 @@ class Card {
 let observer = new MutationObserver(mutationRecords => {    
     var cards = [];
 
-
-    console.log(mutationRecords);
     // parse through all mutations
     for (let record of mutationRecords) {
         let e = record["target"];        
@@ -91,7 +89,6 @@ let observer = new MutationObserver(mutationRecords => {
         let card2 = cards[1];
         let hand = new Hand(card1.value, card1.suit, card2.value, card2.suit);
         
-        console.log(JSON.stringify(hand));
         window.postMessage({type: "FROM_PAGE", text: JSON.stringify(hand)}, "*");
     }  
 });
