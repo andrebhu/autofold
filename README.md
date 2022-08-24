@@ -1,6 +1,8 @@
 # autofold
 A chrome extension to automatically fold bad hands. Currently built for pokernow.
 
+![](example_range.png)
+
 ## how to install
 1. download repo
 2. go to chrome://extensions/ in your chrome browser
