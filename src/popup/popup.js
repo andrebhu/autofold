@@ -18,7 +18,6 @@ function saveRangeTable() {
 }
 
 
-
 function resetRangeTable() {
     let fold = new Array(169).fill(false);
     chrome.storage.local.set({"fold": fold});
@@ -93,9 +92,6 @@ function createBox(name, index, checked) {
 }
 
 
-
-
-
 function createRangeTable() {
   var rangeTable = $('#range');
 
@@ -135,7 +131,6 @@ function createResetButton() {
     };
     document.body.appendChild(resetButton);
 }
-
 
 
 $(document).ready(function () {

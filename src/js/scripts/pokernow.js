@@ -36,16 +36,10 @@ window.addEventListener("message", (event) => {
 })
 
 
-
-
-
-
 function findDealerPosition() {
     var button = document.getElementsByClassName("dealer-button-ctn")[0];
     var button_position = parseInt(button.classList[1].split("-")[2]);
 }
-
-
 
 // read webpage and send cards back to extension
 // this could use some improvement
@@ -94,7 +88,6 @@ let observer = new MutationObserver(mutationRecords => {
 });
 
 
-
 // create observers
 async function createObservers() {
     try{
@@ -120,5 +113,5 @@ async function createObservers() {
 }
 
 
-
 createObservers();
+

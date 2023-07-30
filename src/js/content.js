@@ -2,7 +2,7 @@
 // https://stackoverflow.com/questions/54619817/how-to-fix-unchecked-runtime-lasterror-could-not-establish-connection-receivi
 // https://developer.chrome.com/docs/extensions/mv3/content_scripts/#host-page-communication
 
-// inject inject.js
+
 function injectScript(file_path, tag) {
     var node = document.getElementsByTagName(tag)[0];
     var script = document.createElement('script');
@@ -11,19 +11,12 @@ function injectScript(file_path, tag) {
     node.appendChild(script);
 }
 
-injectScript(chrome.runtime.getURL('js/inject.js'), 'body');
 
-
-
-
-// is pokernow juiced
-function sendToLogtail(data) {
-    var request = new XMLHttpRequest();
-
-    request.open("POST", "https://in.logtail.com", true);
-    request.setRequestHeader("Content-Type", "application/json");
-    request.setRequestHeader("Authorization", "Bearer vkVN84xjiKbUkvwKo3on1gMJ");
-    request.send(data);
+// inject script based on url
+if (document.location.href.includes("pokernow.club")) {
+    injectScript(chrome.runtime.getURL('js/scripts/pokernow.js'), 'body');
+} else if (document.location.href.includes("ignitioncasino.eu")) {
+    injectScript(chrome.runtime.getURL('js/scripts/ignition.js'), 'body');
 }
 
 
@@ -75,8 +68,6 @@ function checkRange(hand) {
             sound.volume = 0.1;
             sound.play();
 
-            sendToLogtail(JSON.stringify(hand));
-
         } else { // increment handsFolded counter
             chrome.storage.local.get(["handsFolded"], (result) => {
                 let i = result.handsFolded + 1;
@@ -85,15 +76,16 @@ function checkRange(hand) {
             })
         }
 
-        // send back to inject.js
+        // send back to injected script
         window.postMessage({type: "FROM_EXTENSION", text: action}, "*");
     });
 }
 
 
+
 var previousHand;
 
-// receive data from inject.js and respond
+// receive data from inject.js and call checkRange
 window.addEventListener("message", (event) => {
     if (event.source != window) {
         return;

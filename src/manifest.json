@@ -3,10 +3,10 @@
     "version": "1.0",
     "manifest_version": 3,
 
-    "description": "Fold bad hands on pokernow",
+    "description": "Fold bad hands",
 
     "action": {
-        "default_popup": "popup.html",
+        "default_popup": "popup/popup.html",
         "default_icon": {
             "128": "/images/poker.png"
         }
@@ -25,13 +25,13 @@
     "content_scripts": [
         {
             "js": ["js/content.js", "js/jquery-3.6.0.min.js"],
-            "matches": ["https://www.pokernow.club/games/*"],
+            "matches": ["https://www.pokernow.club/games/*", "https://ignitioncasino.eu/*"],
             "run_at": "document_idle"
         }
     ],
 
     "web_accessible_resources": [{
-        "resources": ["js/inject.js", "media/alert.mp3"],
+        "resources": ["js/scripts/*", "media/alert.mp3"],
         "matches": ["<all_urls>"]
     }]
 }
